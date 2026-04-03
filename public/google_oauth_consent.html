@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BLOCKVAULT | Authorization Protocol</title>
+    <!-- Font: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <style>
+        :root {
+            --acid-green: #C1FF2F;
+            --obsidian: #0A0A0B;
+            --slate-soft: #1E293B;
+            --glass-white: rgba(255, 255, 255, 0.03);
+            --border-glow: rgba(193, 255, 47, 0.2);
+            --google-blue: #4285F4;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--obsidian);
+            color: white;
+            overflow-x: hidden;
+            selection-background-color: var(--acid-green);
+            selection-color: black;
+        }
+
+        .grain {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        .magnetic-btn {
+            position: relative;
+            background: black;
+            border-radius: 100px;
+            padding: 2px;
+            overflow: hidden;
+            display: inline-block;
+            transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+            cursor: pointer;
+        }
+        .magnetic-btn::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: conic-gradient(transparent, var(--acid-green), transparent 30%);
+            animation: rotate 4s linear infinite;
+            z-index: 0;
+        }
+        .magnetic-btn-inner {
+            background: var(--obsidian);
+            border-radius: 98px;
+            padding: 1rem 2.5rem;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .glass-card {
+            background: var(--glass-white);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.02);
+        }
+
+        .float { animation: floating 6s ease-in-out infinite; }
+        @keyframes floating {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .permission-toggle {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .permission-toggle:checked {
+            background-color: var(--acid-green);
+            box-shadow: 0 0 15px var(--acid-green);
+        }
+
+        /* Pulse for the connection line */
+        .sync-line {
+            background: linear-gradient(90deg, transparent, var(--acid-green), transparent);
+            background-size: 200% 100%;
+            animation: moveGradient 2s linear infinite;
+        }
+        @keyframes moveGradient {
+            0% { background-position: 100% 0; }
+            100% { background-position: -100% 0; }
+        }
+
+        .avatar-glow {
+            box-shadow: 0 0 30px rgba(66, 133, 244, 0.2);
+        }
+
+        [x-cloak] { display: none !important; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col" x-data="{ 
+    step: 'request',
+    permissions: {
+        credentials: true,
+        documents: true
+    },
+    isAuthorizing: false,
+    mouse: { x: 0, y: 0 },
+    handleMouseMove(e) {
+        this.mouse.x = (e.clientX / window.innerWidth - 0.5) * 15;
+        this.mouse.y = (e.clientY / window.innerHeight - 0.5) * 15;
+    }
+}" @mousemove="handleMouseMove($event)">
+
+    <div class="grain"></div>
+
+    <!-- Background Decoration -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden">
+        <div class="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-[var(--acid-green)] rounded-full mix-blend-screen blur-[120px] opacity-10"></div>
+        <div class="absolute bottom-[-10%] left-[-5%] w-[600px] h-[600px] bg-blue-600 rounded-full mix-blend-screen blur-[150px] opacity-10"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 p-8 flex justify-between items-center">
+        <div class="flex items-center gap-2">
+            <div class="w-8 h-8 bg-[#C1FF2F] flex items-center justify-center rounded-sm">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="3"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+            </div>
+            <span class="font-black text-xl tracking-tighter uppercase">BlockVault</span>
+        </div>
+        <div class="text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-500 flex items-center gap-4">
+            <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+            Secure Environment
+        </div>
+    </nav>
+
+    <main class="flex-grow flex items-center justify-center px-6 py-24 relative z-10">
+        <div class="max-w-4xl w-full grid lg:grid-cols-2 gap-12 items-center">
+            
+            <!-- Left Side: Visual Narrative -->
+            <div class="hidden lg:block space-y-8" :style="`transform: translate3d(${mouse.x * 0.2}px, ${mouse.y * 0.2}px, 0)`">
+                <span class="inline-block border border-[rgba(193,255,47,0.3)] text-[var(--acid-green)] px-4 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase bg-[rgba(193,255,47,0.05)]">
+                    System Handshake
+                </span>
+                <h1 class="text-6xl font-black leading-tight tracking-tighter">
+                    LINK YOUR <br><span class="italic text-[var(--acid-green)]">CREDENTIALS.</span>
+                </h1>
+                <p class="text-zinc-400 max-w-sm text-lg leading-relaxed">
+                    By authorizing, BlockVault gains the ability to securely manage your blockchain-verified credentials and credential passport directly inside your account.
+                </p>
+
+                <!-- Connection Visual -->
+                <div class="flex items-center gap-6 pt-8">
+                    <div class="w-16 h-16 glass-card rounded-2xl flex items-center justify-center float">
+                        <div class="w-8 h-8 bg-[#C1FF2F] flex items-center justify-center rounded-sm">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="3"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                        </div>
+                    </div>
+                    <div class="flex-grow h-[2px] bg-zinc-800 relative overflow-hidden">
+                        <div class="absolute inset-0 sync-line"></div>
+                    </div>
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                        </div>
+                </div>
+            </div>
+
+            <!-- Right Side: The Consent Card -->
+            <div class="glass-card rounded-[40px] p-8 md:p-10 relative overflow-hidden shadow-2xl" 
+                 :style="`transform: rotateX(${mouse.y}deg) rotateY(${-mouse.x}deg)`">
+                
+                <!-- Card Header -->
+                <div class="flex flex-col items-center text-center mb-10">
+                    <div class="relative mb-6">
+                        <img src="https://i.pravatar.cc/150?u=blockvault_user" class="w-20 h-20 rounded-full border-4 border-[var(--obsidian)] avatar-glow" alt="User Avatar">
+                        <div class="absolute -bottom-1 -right-1 w-8 h-8 bg-white rounded-full border-4 border-[var(--obsidian)] flex items-center justify-center overflow-hidden">
+                            <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                        </div>
+                    </div>
+                    <h2 class="text-xl font-black uppercase tracking-tight">Authorize BlockVault</h2>
+                    <p class="text-zinc-500 text-sm mt-1">student@university.ac.in</p>
+                </div>
+
+                <!-- Permission Items -->
+                <div class="space-y-4 mb-10">
+                    <!-- Item 1 -->
+                    <label class="block glass-card p-5 rounded-3xl border-l-4 transition-all duration-300 cursor-pointer group"
+                           :class="permissions.credentials ? 'border-l-[var(--acid-green)]' : 'border-l-zinc-800 opacity-60'">
+                        <div class="flex items-start gap-4">
+                            <div class="mt-1 w-6 h-6 rounded-lg bg-zinc-800 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                            </div>
+                            <div class="flex-grow">
+                                <h3 class="font-bold text-sm">Credential Passport</h3>
+                                <p class="text-[10px] text-zinc-500 mt-1 uppercase tracking-wider">Read and write access to manage verified credentials</p>
+                            </div>
+                            <input type="checkbox" x-model="permissions.credentials" class="permission-toggle w-5 h-5 rounded border-zinc-700 bg-black checked:bg-[var(--acid-green)]">
+                        </div>
+                    </label>
+
+                    <!-- Item 2 -->
+                    <label class="block glass-card p-5 rounded-3xl border-l-4 transition-all duration-300 cursor-pointer group"
+                           :class="permissions.documents ? 'border-l-[var(--acid-green)]' : 'border-l-zinc-800 opacity-60'">
+                        <div class="flex items-start gap-4">
+                            <div class="mt-1 w-6 h-6 rounded-lg bg-zinc-800 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            </div>
+                            <div class="flex-grow">
+                                <h3 class="font-bold text-sm">Document Verification</h3>
+                                <p class="text-[10px] text-zinc-500 mt-1 uppercase tracking-wider">Upload documents for AI validation and blockchain hashing</p>
+                            </div>
+                            <input type="checkbox" x-model="permissions.documents" class="permission-toggle w-5 h-5 rounded border-zinc-700 bg-black checked:bg-[var(--acid-green)]">
+                        </div>
+                    </label>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-col gap-4">
+                    <button @click="isAuthorizing = true; setTimeout(() => { isAuthorizing = false; step = 'success' }, 2000)" 
+                            class="magnetic-btn w-full" 
+                            :disabled="isAuthorizing || (!permissions.credentials && !permissions.documents)">
+                        <div class="magnetic-btn-inner w-full">
+                            <template x-if="!isAuthorizing">
+                                <div class="flex items-center gap-2">
+                                    <span>Allow Access</span>
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                                </div>
+                            </template>
+                            <template x-if="isAuthorizing">
+                                <div class="flex items-center gap-3">
+                                    <svg class="animate-spin h-5 w-5 text-[var(--acid-green)]" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                                    <span class="tracking-widest uppercase text-xs font-black">Encrypting...</span>
+                                </div>
+                            </template>
+                        </div>
+                    </button>
+                    <button class="text-zinc-500 text-xs font-bold uppercase tracking-widest hover:text-white transition-colors py-2">
+                        Cancel Authorization
+                    </button>
+                </div>
+
+                <!-- Footer Links -->
+                <div class="mt-8 pt-8 border-t border-zinc-800 flex justify-center gap-6">
+                    <a href="#" class="text-[10px] font-bold text-zinc-600 hover:text-[var(--acid-green)] uppercase tracking-wider">Privacy Policy</a>
+                    <a href="#" class="text-[10px] font-bold text-zinc-600 hover:text-[var(--acid-green)] uppercase tracking-wider">Terms of Service</a>
+                </div>
+
+                <!-- Success Overlay -->
+                <div x-show="step === 'success'" 
+                     x-transition:enter="transition ease-out duration-500"
+                     x-transition:enter-start="opacity-0 translate-y-10"
+                     x-transition:enter-end="opacity-100 translate-y-0"
+                     class="absolute inset-0 bg-[var(--obsidian)] z-50 flex flex-col items-center justify-center p-8 text-center" x-cloak>
+                    <div class="w-20 h-20 bg-[var(--acid-green)] rounded-full flex items-center justify-center mb-6 shadow-[0_0_50px_rgba(193,255,47,0.4)]">
+                        <svg class="w-10 h-10 text-black" fill="none" stroke="currentColor" stroke-width="4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
+                    </div>
+                    <h2 class="text-3xl font-black tracking-tighter mb-2">ACCESS GRANTED</h2>
+                    <p class="text-zinc-500 text-sm max-w-[240px] leading-relaxed">BlockVault is now connected to your credential passport. Redirecting to dashboard...</p>
+                    <div class="mt-8 flex gap-2">
+                        <div class="w-2 h-2 bg-[var(--acid-green)] rounded-full animate-bounce"></div>
+                        <div class="w-2 h-2 bg-[var(--acid-green)] rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+                        <div class="w-2 h-2 bg-[var(--acid-green)] rounded-full animate-bounce" style="animation-delay: 0.4s"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="p-8 border-t border-zinc-900 bg-black z-10">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="flex items-center gap-2">
+                <div class="w-6 h-6 bg-white flex items-center justify-center rounded-sm">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="4"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                </div>
+                <span class="font-black tracking-tighter uppercase text-xs">BlockVault Auth Portal</span>
+            </div>
+            <div class="text-[var(--acid-green)] font-mono text-[10px] animate-pulse">
+                SHA256_ENCRYPTED // LEDGER_HANDSHAKE_PENDING
+            </div>
+            <div class="flex gap-8 text-[10px] font-bold uppercase tracking-widest text-zinc-600">
+                <span>Blockchain Verified Platform</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Custom interaction for the permission items to feel physical
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('mousedown', () => card.style.transform = 'scale(0.98)');
+            card.addEventListener('mouseup', () => card.style.transform = 'scale(1)');
+        });
+    </script>
+</body>
+</html>

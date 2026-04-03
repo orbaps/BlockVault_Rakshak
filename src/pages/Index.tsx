@@ -1,16 +1,27 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useEffect } from "react";
 
-// IMPORTANT: Fully REPLACE this with your own code
-const PlaceholderIndex = () => {
-  // PLACEHOLDER: Replace this entire return statement with the user's app.
-  // The inline background color is intentionally not part of the design system.
+const Index = () => {
+  useEffect(() => {
+    // Redirect to the BlockVault landing page
+    window.location.href = "/landing___value_prop.html";
+  }, []);
+
   return (
-    <div className="flex min-h-screen items-center justify-center" style={{ backgroundColor: '#fcfbf8' }}>
-      <img data-lovable-blank-page-placeholder="REMOVE_THIS" src="/placeholder.svg" alt="Your app will live here!" />
+    <div
+      className="flex min-h-screen items-center justify-center"
+      style={{ backgroundColor: "#0A0A0B", color: "#C1FF2F", fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+    >
+      <div className="text-center">
+        <div className="w-12 h-12 bg-[#C1FF2F] flex items-center justify-center rounded-sm mx-auto mb-4">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+          </svg>
+        </div>
+        <h1 className="text-3xl font-black tracking-tighter uppercase mb-2">BlockVault</h1>
+        <p className="text-sm text-zinc-500">Loading...</p>
+      </div>
     </div>
   );
 };
-
-const Index = PlaceholderIndex;
 
 export default Index;
