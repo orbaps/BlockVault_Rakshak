@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BLOCKVAULT | Report Fraud</title>
+    <!-- Font: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <style>
+        :root {
+            --acid-green: #C1FF2F;
+            --obsidian: #0A0A0B;
+            --alert-red: #EF4444;
+            --amber: #F59E0B;
+            --glass-white: rgba(255, 255, 255, 0.03);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--obsidian);
+            color: white;
+            overflow-x: hidden;
+            selection-background-color: var(--alert-red);
+            selection-color: white;
+        }
+
+        .grain {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--obsidian); }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--alert-red); }
+
+        .glass-card {
+            background: var(--glass-white);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.02);
+        }
+
+        .blob {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
+            opacity: 0.08;
+            background: var(--alert-red);
+        }
+
+        /* Form Inputs */
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--alert-red);
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <div class="grain"></div>
+    <div class="blob w-[600px] h-[600px] top-[-20%] left-[-10%] pointer-events-none"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 p-6 flex justify-between items-center bg-gradient-to-b from-black/90 to-transparent backdrop-blur-sm">
+        <div class="flex items-center gap-2">
+            <div class="w-8 h-8 bg-[var(--alert-red)] flex items-center justify-center rounded-sm shadow-[0_0_15px_rgba(239,68,68,0.5)]">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+            </div>
+            <a href="landing___value_prop.html" class="font-black text-xl tracking-tighter uppercase cursor-pointer">BlockVault Trust</a>
+        </div>
+        <div class="hidden md:flex gap-8 text-sm font-bold uppercase tracking-widest text-zinc-500">
+            <a href="how_it_works.html" class="hover:text-white transition-colors pb-1 border-b-2 border-transparent">How It Works</a>
+            <a href="for_institutions.html" class="hover:text-white transition-colors pb-1 border-b-2 border-transparent">For Institutions</a>
+            <a href="verify.html" class="hover:text-white transition-colors pb-1 border-b-2 border-transparent">Verify</a>
+            <a href="pricing.html" class="hover:text-white transition-colors pb-1 border-b-2 border-transparent">Pricing</a>
+        </div>
+        <div class="flex items-center gap-3">
+            <a href="help.html" class="text-zinc-400 px-4 py-2 rounded-full font-bold text-sm hover:text-white transition-colors">Help Center</a>
+        </div>
+    </nav>
+
+    <main class="flex-grow pt-32 pb-20 px-6 max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-16">
+        
+        <!-- Left Side: Information & Guide -->
+        <div class="space-y-12">
+            <header>
+                <h1 class="text-5xl md:text-6xl font-black leading-tight tracking-tighter mb-4 uppercase text-white">
+                    Report <span class="text-[var(--alert-red)]">Fraud</span>
+                </h1>
+                <p class="text-xl text-zinc-400 leading-relaxed font-medium mb-6">
+                    Help us maintain a trusted ecosystem. If you suspect fraudulent credentials, misuse, or suspicious activity, report it immediately.
+                </p>
+                <div class="inline-block border border-[rgba(239,68,68,0.3)] text-[var(--alert-red)] px-4 py-1 rounded-full text-xs font-bold tracking-widest uppercase bg-[rgba(239,68,68,0.05)]">
+                    Confidential & Secure
+                </div>
+            </header>
+
+            <div class="space-y-10">
+                <!-- What Can Be Reported -->
+                <section>
+                    <h2 class="text-xl font-black uppercase tracking-widest text-white border-b border-zinc-800 pb-2 mb-4 flex items-center gap-3">
+                        <span>🚨</span> What can be reported?
+                    </h2>
+                    <ul class="space-y-3 text-zinc-400 text-sm">
+                        <li class="flex items-start gap-3"><span class="text-white mt-0.5">•</span> Fake or altered certificates</li>
+                        <li class="flex items-start gap-3"><span class="text-white mt-0.5">•</span> Suspicious credential activity</li>
+                        <li class="flex items-start gap-3"><span class="text-white mt-0.5">•</span> Unauthorized access or sharing</li>
+                        <li class="flex items-start gap-3"><span class="text-white mt-0.5">•</span> Misuse of institution accounts</li>
+                    </ul>
+                </section>
+
+                <!-- Steps Guide -->
+                <section>
+                    <h2 class="text-xl font-black uppercase tracking-widest text-white border-b border-zinc-800 pb-2 mb-6 flex items-center gap-3">
+                        <span>📝</span> How to Report
+                    </h2>
+                    
+                    <div class="space-y-6 relative border-l border-zinc-800 ml-3 pl-8">
+                        <div class="relative">
+                            <span class="absolute -left-[45px] top-0 w-6 h-6 bg-[var(--obsidian)] border border-zinc-600 rounded-full flex items-center justify-center text-[10px] font-bold text-white">1</span>
+                            <h3 class="font-bold text-white text-lg mb-1">Identify the Issue</h3>
+                            <p class="text-xs text-zinc-400 mb-2">Clearly describe what seems suspicious.</p>
+                            <div class="bg-white/5 border border-zinc-800 rounded-lg p-4 mt-3">
+                                <span class="text-xs text-[var(--amber)] uppercase tracking-widest font-bold block mb-2">👉 Look for:</span>
+                                <ul class="text-sm text-zinc-300 space-y-1">
+                                    <li>• Incorrect data on the credential card</li>
+                                    <li>• Unverified institution warnings</li>
+                                    <li>• Mismatched avatar/candidate details</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="relative">
+                            <span class="absolute -left-[45px] top-0 w-6 h-6 bg-[var(--obsidian)] border border-zinc-600 rounded-full flex items-center justify-center text-[10px] font-bold text-white">2</span>
+                            <h3 class="font-bold text-white text-lg mb-1">Collect Evidence</h3>
+                            <p class="text-sm text-zinc-400 mb-2">Provide screenshots, QR links, Passport IDs, or Transaction IDs (if available). Collecting evidence is crucial for our AI + manual validation process.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- What happens next -->
+                <section class="glass-card p-8 rounded-3xl border border-zinc-800">
+                    <h2 class="text-xl font-black uppercase tracking-widest text-white mb-4 flex items-center gap-3">
+                        <span>🔐</span> What Happens Next?
+                    </h2>
+                    <ul class="space-y-4 text-sm text-zinc-400">
+                        <li class="flex items-start gap-3"><span class="text-[var(--acid-green)] text-lg">1.</span> Case is logged into securely.</li>
+                        <li class="flex items-start gap-3"><span class="text-[var(--acid-green)] text-lg">2.</span> AI and system analysis begins extracting metadata anomalies.</li>
+                        <li class="flex items-start gap-3"><span class="text-[var(--acid-green)] text-lg">3.</span> Investigation team reviews the evidence manually.</li>
+                        <li class="flex items-start gap-3"><span class="text-[var(--acid-green)] text-lg">4.</span> Action is enforced (e.g., permanent revocation) if fraud is confirmed.</li>
+                    </ul>
+                    <div class="mt-6 pt-6 border-t border-zinc-800/50 flex items-center justify-between">
+                        <div>
+                            <span class="block text-[10px] text-zinc-500 uppercase tracking-widest font-bold">Initial Review</span>
+                            <span class="text-sm text-white font-medium">&lt; 24 Hours</span>
+                        </div>
+                        <div class="text-right">
+                            <span class="block text-[10px] text-zinc-500 uppercase tracking-widest font-bold">Full Investigation</span>
+                            <span class="text-sm text-white font-medium">2-5 Business Days</span>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+
+        <!-- Right Side: The Form -->
+        <div class="relative" x-data="{ submitted: false }">
+            <div class="sticky top-32">
+                <div class="glass-card rounded-[40px] p-8 lg:p-10 border border-zinc-800 shadow-2xl relative overflow-hidden bg-gradient-to-b from-[rgba(239,68,68,0.02)] to-transparent">
+                    
+                    <template x-if="!submitted">
+                        <form @submit.prevent="submitted = true; setTimeout(() => window.scrollTo({top: 0, behavior: 'smooth'}), 100)" class="space-y-6 relative z-10">
+                            <div>
+                                <h2 class="text-2xl font-black uppercase tracking-tighter border-b border-zinc-800 pb-4 mb-6">Submit Report</h2>
+                                <p class="text-xs text-zinc-500 uppercase tracking-widest font-bold mb-6">Your data is handled securely. Anonymous reporting supported.</p>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="space-y-2">
+                                    <label class="text-xs font-bold uppercase tracking-widest text-zinc-400">Your Name <span class="text-zinc-600 font-normal lowercase">(Optional)</span></label>
+                                    <input type="text" class="w-full bg-black/50 border border-zinc-800 rounded-xl px-4 py-3 text-white text-sm" placeholder="Anonymous">
+                                </div>
+                                <div class="space-y-2">
+                                    <label class="text-xs font-bold uppercase tracking-widest text-zinc-400">Email <span class="text-red-500">*</span></label>
+                                    <input type="email" required class="w-full bg-black/50 border border-zinc-800 rounded-xl px-4 py-3 text-white text-sm" placeholder="For follow-ups">
+                                </div>
+                            </div>
+
+                            <div class="space-y-2">
+                                <label class="text-xs font-bold uppercase tracking-widest text-zinc-400">Type of Fraud <span class="text-red-500">*</span></label>
+                                <select required class="w-full bg-black/50 border border-zinc-800 rounded-xl px-4 py-3 text-white text-sm appearance-none cursor-pointer">
+                                    <option value="" disabled selected>Select an issue...</option>
+                                    <option>Altered Document</option>
+                                    <option>Fake Certificate / Unverified Institution</option>
+                                    <option>Unauthorized Credential Access</option>
+                                    <option>Misuse of Platform</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+
+                            <div class="space-y-2">
+                                <label class="text-xs font-bold uppercase tracking-widest text-zinc-400">Description <span class="text-red-500">*</span></label>
+                                <textarea required rows="4" class="w-full bg-black/50 border border-zinc-800 rounded-xl px-4 py-3 text-white text-sm resize-none" placeholder="Provide details, Passport IDs, or transaction hashes..."></textarea>
+                            </div>
+
+                            <div class="space-y-2">
+                                <label class="text-xs font-bold uppercase tracking-widest text-zinc-400">Supporting Evidence</label>
+                                <div class="border border-dashed border-zinc-700 bg-black/30 rounded-xl p-6 text-center cursor-pointer hover:bg-zinc-900 transition-colors">
+                                    <svg class="w-8 h-8 text-zinc-500 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                                    <span class="text-sm font-medium text-white block">Click to upload files</span>
+                                    <span class="text-xs text-zinc-500 block mt-1">PNG, JPG, PDF up to 10MB</span>
+                                </div>
+                            </div>
+
+                            <div class="pt-4 border-t border-zinc-800">
+                                <button type="submit" class="w-full py-4 rounded-xl bg-[var(--alert-red)] text-white font-black tracking-widest uppercase text-sm hover:bg-red-600 transition-colors flex justify-center items-center gap-2">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                    Submit Investigation Request
+                                </button>
+                                <p class="text-center text-[10px] text-zinc-500 mt-4 uppercase tracking-widest font-bold">False reporting may lead to account restrictions.</p>
+                            </div>
+                        </form>
+                    </template>
+
+                    <!-- Success State -->
+                    <template x-if="submitted">
+                        <div class="text-center py-20 relative z-10">
+                            <div class="w-20 h-20 bg-emerald-500/10 border border-emerald-500/30 rounded-full flex items-center justify-center mx-auto mb-6">
+                                <svg class="w-10 h-10 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            </div>
+                            <h3 class="text-3xl font-black uppercase tracking-tighter mb-4">Report Submitted</h3>
+                            <p class="text-zinc-400 text-sm max-w-sm mx-auto mb-8">
+                                Our security team has received your report. If you provided an email, you will receive an update regarding our investigation within 2-5 business days.
+                            </p>
+                            <button @click="submitted = false" class="text-zinc-500 hover:text-white text-xs font-bold uppercase tracking-widest transition-colors">Submit Another Report</button>
+                        </div>
+                    </template>
+                </div>
+
+                <div class="text-center mt-8 text-sm text-zinc-500">
+                    Prefer direct email? Contact <a href="mailto:fraud@blockvault.io" class="text-[var(--alert-red)] font-bold">fraud@blockvault.io</a>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="p-8 border-t border-zinc-900 bg-black mt-auto z-10 relative">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="flex items-center gap-2">
+                <div class="w-6 h-6 bg-[var(--alert-red)] flex items-center justify-center rounded-sm">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="4"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                </div>
+                <span class="font-black tracking-tighter uppercase text-xs">BlockVault Security</span>
+            </div>
+            <div class="flex flex-wrap justify-center gap-6 md:gap-8 text-[10px] sm:text-xs font-bold uppercase tracking-widest text-zinc-600">
+                <a href="help.html" class="hover:text-[var(--acid-green)] transition-colors mt-1">Help</a>
+                <a href="report_fraud.html" class="bg-red-500/10 text-red-400 px-3 py-1 rounded border border-red-500/20 hover:bg-red-500 hover:text-white transition-colors">Report Fraud</a>
+                <a href="terms.html" class="hover:text-[var(--acid-green)] transition-colors mt-1">Terms</a>
+                <a href="refund_policy.html" class="hover:text-[var(--acid-green)] transition-colors mt-1">Refund Policy</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

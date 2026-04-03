@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BLOCKVAULT | Institution Configuration</title>
+    <!-- Font: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <style>
+        :root {
+            --acid-green: #C1FF2F;
+            --obsidian: #0A0A0B;
+            --slate-soft: #1E293B;
+            --glass-white: rgba(255, 255, 255, 0.03);
+            --border-glow: rgba(193, 255, 47, 0.2);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--obsidian);
+            color: white;
+            overflow-x: hidden;
+            selection-background-color: var(--acid-green);
+            selection-color: black;
+        }
+
+        .grain {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--obsidian); }
+        ::-webkit-scrollbar-thumb { background: var(--slate-soft); border-radius: 10px; }
+
+        .glass-card {
+            background: var(--glass-white);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: inset 0 0 30px rgba(255, 255, 255, 0.02);
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(193, 255, 47, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .magnetic-btn {
+            position: relative;
+            background: black;
+            border-radius: 100px;
+            padding: 2px;
+            overflow: hidden;
+            display: inline-block;
+            transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .magnetic-btn::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: conic-gradient(transparent, var(--acid-green), transparent 30%);
+            animation: rotate 4s linear infinite;
+            z-index: 0;
+        }
+
+        .magnetic-btn-inner {
+            background: var(--obsidian);
+            border-radius: 98px;
+            padding: 1.25rem 3rem;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .calendar-toggle {
+            width: 52px;
+            height: 28px;
+            background: #1a1a1a;
+            border-radius: 20px;
+            padding: 4px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .toggle-knob {
+            width: 20px;
+            height: 20px;
+            background: #444;
+            border-radius: 50%;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .active-toggle { background: var(--acid-green); }
+        .active-knob { transform: translateX(24px); background: black; }
+
+        .conflict-mesh {
+            background-image: radial-gradient(var(--acid-green) 1px, transparent 1px);
+            background-size: 20px 20px;
+            mask-image: linear-gradient(to bottom, black, transparent);
+        }
+
+        .step-indicator {
+            width: 40px;
+            height: 4px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .step-progress {
+            height: 100%;
+            background: var(--acid-green);
+            transition: width 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+        }
+
+        .floating-orb {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
+            opacity: 0.15;
+            animation: drift 20s infinite alternate;
+        }
+
+        @keyframes drift {
+            from { transform: translate(-10%, -10%) scale(1); }
+            to { transform: translate(20%, 20%) scale(1.2); }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col" x-data="{ 
+    step: 1,
+    calendars: [
+        { id: 'degrees', name: 'Degree Certificates', count: 'B.Tech, M.Tech, PhD', color: '#4285F4', active: true },
+        { id: 'diplomas', name: 'Diploma Certificates', count: 'PG Diploma, Advanced Diploma', color: '#FBBC05', active: true },
+        { id: 'professional', name: 'Professional Certifications', count: 'AWS, Azure, Google Cloud', color: '#34A853', active: false },
+        { id: 'external', name: 'External Platforms (AI Only)', count: 'Coursera, LinkedIn Learning', color: '#EA4335', active: false }
+    ],
+    isFinalizing: false,
+    syncComplete: false,
+    get activeCount() { return this.calendars.filter(c => c.active).length }
+}">
+
+    <div class="grain"></div>
+    <div class="floating-orb bg-[var(--acid-green)] top-[-10%] right-[-10%]"></div>
+    <div class="floating-orb bg-blue-600 bottom-[-10%] left-[-10%]"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 p-8 flex justify-between items-center bg-gradient-to-b from-black/50 to-transparent backdrop-blur-sm">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-[var(--acid-green)] flex items-center justify-center rounded-sm rotate-45 group hover:rotate-90 transition-transform duration-500">
+                <svg class="-rotate-45" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="3"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+            </div>
+            <span class="font-black text-2xl tracking-tighter uppercase">BlockVault</span>
+        </div>
+        
+        <div class="flex items-center gap-6">
+            <div class="flex gap-2">
+                <div class="step-indicator"><div class="step-progress" :style="`width: ${step >= 1 ? '100%' : '0%'}`"></div></div>
+                <div class="step-indicator"><div class="step-progress" :style="`width: ${step >= 2 ? '100%' : '0%'}`"></div></div>
+                <div class="step-indicator"><div class="step-progress" :style="`width: ${step >= 3 ? '100%' : '0%'}`"></div></div>
+            </div>
+            <span class="text-[10px] font-black uppercase tracking-widest text-zinc-500">Step 0<span x-text="step"></span> / 03</span>
+        </div>
+    </nav>
+
+    <main class="flex-grow flex items-center justify-center pt-24 px-6 relative">
+        <!-- Wizard Content -->
+        <div class="max-w-4xl w-full grid lg:grid-cols-2 gap-12 items-center">
+            
+            <!-- Left Side: Context -->
+            <div class="space-y-8">
+                <div x-show="step === 1" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 translate-x-[-20px]" x-transition:enter-end="opacity-100 translate-x-0">
+                    <span class="text-[var(--acid-green)] font-black text-sm uppercase tracking-[0.3em] mb-4 block italic">// CREDENTIAL_SETUP</span>
+                    <h1 class="text-6xl md:text-7xl font-black leading-[0.85] tracking-tighter mb-6 uppercase">
+                        Configure <br>Your <span class="text-[var(--acid-green)]">Vault.</span>
+                    </h1>
+                    <p class="text-zinc-400 text-lg leading-relaxed max-w-sm">
+                        Select the credential types your institution will issue on BlockVault. Each credential is SHA-256 hashed and written to the Hyperledger Fabric ledger for tamper-proof verification.
+                    </p>
+                </div>
+
+                <div x-show="step === 2" x-cloak x-transition:enter="transition ease-out duration-500">
+                    <span class="text-white font-black text-sm uppercase tracking-[0.3em] mb-4 block">// BLOCKCHAIN_CONFIG</span>
+                    <h1 class="text-6xl md:text-7xl font-black leading-[0.85] tracking-tighter mb-6 uppercase">
+                        Zero <br><span class="text-[var(--acid-green)]">Fraud.</span>
+                    </h1>
+                    <p class="text-zinc-400 text-lg leading-relaxed max-w-sm">
+                        We've initialized <span class="text-white font-bold" x-text="activeCount * 4"></span> verification checks. BlockVault's AI is analyzing your credential categories to generate confidence scores for every issued document.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Right Side: Interaction Card -->
+            <div class="relative">
+                <!-- Conflict Visualizer (Background Decorative) -->
+                <div class="absolute inset-0 conflict-mesh -z-10 opacity-20"></div>
+
+                <div class="glass-card rounded-[40px] p-8 lg:p-10 relative overflow-hidden">
+                    <!-- Internal Header -->
+                    <div class="flex justify-between items-end mb-10">
+                        <div>
+                            <h2 class="text-xs font-black text-zinc-500 uppercase tracking-widest mb-1">Institution Account</h2>
+                            <p class="text-white font-bold">admin@iitdemo.ac.in</p>
+                        </div>
+                        <div class="w-10 h-10 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center overflow-hidden">
+                            <img src="https://i.pravatar.cc/100?u=9" alt="profile">
+                        </div>
+                    </div>
+
+                    <!-- Credential Type Selection List -->
+                    <div class="space-y-4 mb-12">
+                        <template x-for="cal in calendars" :key="cal.id">
+                            <div @click="cal.active = !cal.active" 
+                                 class="group flex items-center justify-between p-4 rounded-2xl cursor-pointer transition-all duration-300"
+                                 :class="cal.active ? 'bg-white/5 border border-white/10' : 'opacity-40 hover:opacity-100 border border-transparent'">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-2 h-8 rounded-full" :style="`background-color: ${cal.color}`"></div>
+                                    <div>
+                                        <h4 class="font-bold text-sm" x-text="cal.name"></h4>
+                                        <p class="text-[10px] uppercase font-black tracking-widest text-zinc-500" x-text="cal.count"></p>
+                                    </div>
+                                </div>
+                                <div class="calendar-toggle" :class="cal.active ? 'active-toggle' : ''">
+                                    <div class="toggle-knob" :class="cal.active ? 'active-knob' : ''"></div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+
+                    <!-- Action Area -->
+                    <div class="flex flex-col gap-4">
+                        <button @click="if(step < 2) { step++ } else { isFinalizing = true; setTimeout(() => { isFinalizing = false; syncComplete = true; }, 2000) }" 
+                                class="magnetic-btn w-full"
+                                :disabled="activeCount === 0 || syncComplete">
+                            <div class="magnetic-btn-inner justify-center w-full">
+                                <template x-if="!isFinalizing && !syncComplete">
+                                    <span x-text="step === 1 ? 'Analyze Credential Types' : 'Initialize Ledger'"></span>
+                                </template>
+                                <template x-if="isFinalizing">
+                                    <div class="flex items-center gap-3">
+                                        <svg class="animate-spin h-5 w-5 text-[var(--acid-green)]" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                                        Hashing Blocks...
+                                    </div>
+                                </template>
+                                <template x-if="syncComplete">
+                                    <div class="flex items-center gap-3 text-green-400">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg>
+                                        Ledger Ready
+                                    </div>
+                                </template>
+                            </div>
+                        </button>
+                        
+                        <div class="flex justify-center">
+                            <button x-show="step > 1 && !syncComplete" @click="step--" class="text-zinc-500 hover:text-white text-[10px] font-black uppercase tracking-widest transition-colors">
+                                Go Back
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Floating Badge -->
+                <div x-show="activeCount > 0" x-transition class="absolute -right-6 -top-6 glass-card bg-[var(--acid-green)] text-black px-6 py-4 rounded-3xl font-black text-xs uppercase tracking-tighter rotate-12 shadow-2xl">
+                    <span x-text="activeCount"></span> Credential Types <br>Configured
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Contextual Footer -->
+    <footer class="p-10 mt-auto border-t border-zinc-900 bg-black/50 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="flex flex-col gap-1">
+                <span class="text-[10px] font-black uppercase tracking-[0.4em] text-zinc-600">Privacy Protocol</span>
+                <p class="text-xs text-zinc-400 max-w-xs">Only SHA-256 hashes are stored on the ledger. Student PII stays in Supabase with row-level security — never on-chain.</p>
+            </div>
+
+            <div class="flex items-center gap-12">
+                <div class="text-right">
+                    <p class="text-[10px] font-black uppercase tracking-widest text-zinc-500 mb-1">Ledger Status</p>
+                    <div class="flex items-center gap-2 justify-end">
+                        <div class="w-2 h-2 rounded-full animate-pulse" :class="activeCount > 0 ? 'bg-[var(--acid-green)]' : 'bg-red-500'"></div>
+                        <span class="text-xs font-bold font-mono" x-text="activeCount > 0 ? 'CHAIN_READY' : 'WAITING_FOR_CONFIG'"></span>
+                    </div>
+                </div>
+                
+                <div class="flex -space-x-3">
+                    <div class="w-10 h-10 rounded-full border-2 border-black bg-zinc-800 flex items-center justify-center">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M12.545 11.031a.5.5 0 0 1 .5.5v1.938a.5.5 0 0 1-.5.5H1.545a.5.5 0 0 1-.5-.5v-1.938a.5.5 0 0 1 .5-.5h11zM11 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm0 14a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>
+                    </div>
+                    <div class="w-10 h-10 rounded-full border-2 border-black bg-[var(--acid-green)] flex items-center justify-center">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="black"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/></svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Success Modal Overlays -->
+    <div x-show="syncComplete" 
+         x-transition:enter="transition ease-out duration-500"
+         x-transition:enter-start="opacity-0 scale-95"
+         x-transition:enter-end="opacity-100 scale-100"
+         class="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/80 backdrop-blur-xl">
+        <div class="glass-card max-w-md w-full p-12 text-center rounded-[40px] border-[var(--acid-green)]/30">
+            <div class="w-20 h-20 bg-[var(--acid-green)] rounded-full flex items-center justify-center mx-auto mb-8 shadow-[0_0_50px_rgba(193,255,47,0.4)]">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            </div>
+            <h2 class="text-4xl font-black uppercase tracking-tighter mb-4 leading-none">Vault Initialized</h2>
+            <p class="text-zinc-400 mb-10">BlockVault has configured your institution's credential ledger. You can now issue blockchain-verified credentials to students.</p>
+            <button class="bg-white text-black w-full py-4 rounded-full font-black uppercase tracking-widest hover:bg-[var(--acid-green)] transition-colors">Enter Institution Dashboard</button>
+        </div>
+    </div>
+
+</body>
+</html>
