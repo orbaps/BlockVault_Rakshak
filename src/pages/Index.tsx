@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import BlockVaultChatbot from "@/components/BlockVaultChatbot";
 
 const Index = () => {
   useEffect(() => {
@@ -20,6 +21,7 @@ const Index = () => {
         <h1 className="text-3xl font-black tracking-tighter uppercase mb-2">BlockVault</h1>
         <p className="text-sm text-zinc-500">Loading...</p>
       </div>
+      <BlockVaultChatbot />
     </div>
   );
 };
