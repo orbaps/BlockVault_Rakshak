@@ -113,6 +113,7 @@ BlockVault provides:
 - Linked to student passport  
 - View via private explorer  
 - Revoke if needed  
+<img width="1536" height="1024" alt="institutions" src="https://github.com/user-attachments/assets/a11b50a1-65da-42a4-b347-759dd80a87a0" />
 
 ---
 
@@ -130,6 +131,8 @@ BlockVault provides:
 - Stored with confidence score  
 - Used for future verification  
 
+<img width="1024" height="1536" alt="student" src="https://github.com/user-attachments/assets/a6861cf6-b321-497c-be29-d41dfcac97ac" />
+
 ---
 
 ###  Organization Flow
@@ -141,6 +144,8 @@ BlockVault provides:
 - Request decryption (if needed)  
 - Perform deep validation  
 - Generate audit reports  
+
+![Uploading organisation.png…]()
 
 ---
 
