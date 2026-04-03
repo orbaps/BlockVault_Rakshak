@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BLOCKVAULT | Terms & Conditions</title>
+    <!-- Font: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <style>
+        :root {
+            --acid-green: #C1FF2F;
+            --obsidian: #0A0A0B;
+            --glass-white: rgba(255, 255, 255, 0.03);
+            --border-glow: rgba(193, 255, 47, 0.2);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--obsidian);
+            color: white;
+            overflow-x: hidden;
+            selection-background-color: var(--acid-green);
+            selection-color: black;
+        }
+
+        .grain {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--obsidian); }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--acid-green); }
+
+        .glass-card {
+            background: var(--glass-white);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.02);
+        }
+
+        .blob {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
+            opacity: 0.15;
+            background: var(--acid-green);
+        }
+
+        /* Document Prose Styles */
+        .prose h2 {
+            font-size: 1.5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            color: white;
+            margin-top: 3rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 0.5rem;
+        }
+        
+        .prose h2 span {
+            color: var(--acid-green);
+            margin-right: 0.5rem;
+        }
+
+        .prose p {
+            color: #A1A1A1;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .prose ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .prose ul li {
+            position: relative;
+            padding-left: 1.5rem;
+            color: #D4D4D8;
+            line-height: 1.6;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .prose ul li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--acid-green);
+            font-weight: bold;
+        }
+
+        .prose blockquote {
+            border-left: 4px solid var(--acid-green);
+            padding-left: 1rem;
+            margin: 1.5rem 0;
+            color: #71717A;
+            font-style: italic;
+            background: rgba(255,255,255,0.02);
+            padding: 1rem;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <div class="grain"></div>
+    <div class="blob w-[600px] h-[600px] top-[-20%] right-[-10%] mix-blend-screen pointer-events-none"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 p-6 flex justify-between items-center bg-gradient-to-b from-black/90 to-transparent backdrop-blur-sm">
+        <div class="flex items-center gap-2">
+            <div class="w-8 h-8 bg-[#C1FF2F] flex items-center justify-center rounded-sm">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+            </div>
+            <a href="landing___value_prop.html" class="font-black text-xl tracking-tighter uppercase cursor-pointer">BlockVault</a>
+        </div>
+        <div class="hidden md:flex gap-8 text-sm font-bold uppercase tracking-widest text-zinc-500">
+            <a href="how_it_works.html" class="hover:text-white transition-colors pb-1 border-b-2 border-transparent">How It Works</a>
+            <a href="for_institutions.html" class="hover:text-white transition-colors pb-1 border-b-2 border-transparent">For Institutions</a>
+            <a href="verify.html" class="hover:text-white transition-colors pb-1 border-b-2 border-transparent">Verify</a>
+            <a href="pricing.html" class="hover:text-white transition-colors pb-1 border-b-2 border-transparent">Pricing</a>
+        </div>
+        <div class="flex items-center gap-3">
+            <button class="text-zinc-400 px-4 py-2 rounded-full font-bold text-sm hover:text-white transition-colors">Sign In</button>
+            <button class="bg-white text-black px-6 py-2 rounded-full font-bold text-sm hover:scale-105 transition-transform">Get Started</button>
+        </div>
+    </nav>
+
+    <main class="flex-grow pt-32 pb-20 px-6 max-w-4xl mx-auto w-full">
+        
+        <div class="glass-card rounded-[40px] p-8 md:p-12 lg:p-16 border border-zinc-800 relative shadow-2xl">
+            <!-- Header -->
+            <header class="mb-12 border-b border-zinc-500/20 pb-8 text-center md:text-left">
+                <span class="inline-block border border-[rgba(193,255,47,0.3)] text-[var(--acid-green)] px-4 py-1 rounded-full text-xs font-bold tracking-widest uppercase bg-[rgba(193,255,47,0.05)] mb-4">
+                    Last Updated: 2026
+                </span>
+                <h1 class="text-4xl md:text-5xl font-black leading-tight tracking-tighter uppercase text-white">
+                    Terms & Conditions
+                </h1>
+                <p class="text-zinc-500 mt-4 font-medium tracking-wide">BlockVault — Trust Infrastructure for the Future</p>
+            </header>
+
+            <!-- Prose Content -->
+            <div class="prose max-w-none">
+                
+                <h2><span>1.</span> Acceptance of Terms</h2>
+                <p>By accessing or using BlockVault, you agree to these Terms. If you do not agree, do not use the platform.</p>
+
+                <h2><span>2.</span> Description of Service</h2>
+                <p>BlockVault provides:</p>
+                <ul>
+                    <li>Blockchain-based credential verification</li>
+                    <li>AI-powered fraud detection</li>
+                    <li>Credential storage and sharing tools</li>
+                </ul>
+
+                <h2><span>3.</span> User Accounts</h2>
+                <p>You are responsible for:</p>
+                <ul>
+                    <li>Maintaining account security</li>
+                    <li>Providing accurate information</li>
+                    <li>All activity under your account</li>
+                </ul>
+
+                <h2><span>4.</span> Subscription & Payments</h2>
+                <ul>
+                    <li>Services are billed on a subscription basis</li>
+                    <li>Plans may auto-renew unless cancelled</li>
+                    <li>Pricing may change with notice</li>
+                </ul>
+                <blockquote>Subscription and renewal terms are core components of SaaS agreements.</blockquote>
+
+                <h2><span>5.</span> Acceptable Use</h2>
+                <p>You agree NOT to:</p>
+                <ul>
+                    <li>Upload fraudulent or misleading credentials</li>
+                    <li>Attempt to hack or disrupt the platform</li>
+                    <li>Misuse verification systems</li>
+                </ul>
+
+                <h2><span>6.</span> Credential Responsibility</h2>
+                <ul>
+                    <li>Institutions are responsible for issued credentials</li>
+                    <li>Users are responsible for uploaded documents</li>
+                    <li>BlockVault does not guarantee the authenticity of external uploads</li>
+                </ul>
+
+                <h2><span>7.</span> AI & Verification Disclaimer</h2>
+                <ul>
+                    <li>AI confidence scores are probabilistic</li>
+                    <li>Verification results are informational, not legal proof</li>
+                </ul>
+
+                <h2><span>8.</span> Termination</h2>
+                <p>We may suspend or terminate accounts if:</p>
+                <ul>
+                    <li>Terms are violated</li>
+                    <li>Fraudulent activity is detected</li>
+                </ul>
+                <blockquote>Termination clauses are standard to limit liability and define account removal conditions.</blockquote>
+
+                <h2><span>9.</span> Data & Privacy</h2>
+                <ul>
+                    <li>Data is stored securely</li>
+                    <li>Blockchain records are immutable</li>
+                    <li>Users retain control over credential sharing</li>
+                </ul>
+
+                <h2><span>10.</span> Limitation of Liability</h2>
+                <p>BlockVault is not liable for:</p>
+                <ul>
+                    <li>Hiring decisions based on verification</li>
+                    <li>Loss due to misuse of credentials</li>
+                    <li>Third-party integrations</li>
+                </ul>
+
+                <h2><span>11.</span> Service Availability</h2>
+                <ul>
+                    <li>We aim for high uptime</li>
+                    <li>No guarantee of uninterrupted service</li>
+                </ul>
+
+                <h2><span>12.</span> Intellectual Property</h2>
+                <p>All platform content, branding, and technology belong to BlockVault.</p>
+
+                <h2><span>13.</span> Modifications</h2>
+                <p>We may update Terms at any time. Continued use of the platform constitutes your acceptance of the updated Terms.</p>
+
+                <h2><span>14.</span> Governing Law</h2>
+                <p>These Terms are governed by applicable laws of India.</p>
+
+                <h2><span>15.</span> Contact</h2>
+                <p>If you have any questions regarding these Terms, please contact our legal team:</p>
+                <div class="mt-4 p-4 border border-zinc-800 bg-black/50 rounded-xl inline-block">
+                    <span class="text-xs text-zinc-500 uppercase tracking-widest font-bold block mb-1">Email Legal</span>
+                    <a href="mailto:legal@blockvault.io" class="text-[var(--acid-green)] font-bold tracking-wider hover:underline">legal@blockvault.io</a>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="p-8 border-t border-zinc-900 bg-black mt-auto">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="flex items-center gap-2">
+                <div class="w-6 h-6 bg-[var(--acid-green)] flex items-center justify-center rounded-sm">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="4"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                </div>
+                <span class="font-black tracking-tighter uppercase text-xs">BlockVault Legal</span>
+            </div>
+            <div class="flex flex-wrap justify-center gap-6 md:gap-8 text-[10px] sm:text-xs font-bold uppercase tracking-widest text-zinc-600">
+                <a href="help.html" class="hover:text-[var(--acid-green)] transition-colors mt-1">Help</a>
+                <a href="report_fraud.html" class="bg-red-500/10 text-red-400 px-3 py-1 rounded border border-red-500/20 hover:bg-red-500 hover:text-white transition-colors">Report Fraud</a>
+                <a href="terms.html" class="text-[var(--acid-green)] transition-colors mt-1">Terms</a>
+                <a href="refund_policy.html" class="hover:text-[var(--acid-green)] transition-colors mt-1">Refund Policy</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
