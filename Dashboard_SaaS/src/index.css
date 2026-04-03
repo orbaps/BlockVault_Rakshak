@@ -1,0 +1,194 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* BlockVault Reference Theme — Acid Green / Obsidian */
+    --acid-green: #C1FF2F;
+    --obsidian: #0A0A0B;
+    --slate-soft: #1E293B;
+    --glass-white: rgba(255, 255, 255, 0.03);
+    --border-glow: rgba(193, 255, 47, 0.2);
+
+    --background: 0 0% 4%;
+    --foreground: 0 0% 92%;
+    --card: 0 0% 6%;
+    --card-foreground: 0 0% 92%;
+    --popover: 0 0% 6%;
+    --popover-foreground: 0 0% 92%;
+    --primary: 79 100% 59%;    /* acid green #C1FF2F */
+    --primary-foreground: 0 0% 0%;
+    --secondary: 0 0% 9%;
+    --secondary-foreground: 0 0% 70%;
+    --muted: 0 0% 9%;
+    --muted-foreground: 0 0% 40%;
+    --accent: 79 100% 59%;
+    --accent-foreground: 0 0% 0%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 12%;
+    --input: 0 0% 8%;
+    --ring: 79 100% 59%;
+    --radius: 0.75rem;
+
+    --sidebar-background: 0 0% 3%;
+    --sidebar-foreground: 0 0% 80%;
+    --sidebar-primary: 79 100% 59%;
+    --sidebar-primary-foreground: 0 0% 0%;
+    --sidebar-accent: 0 0% 8%;
+    --sidebar-accent-foreground: 0 0% 70%;
+    --sidebar-border: 0 0% 10%;
+    --sidebar-ring: 79 100% 59%;
+
+    --success: 79 100% 59%;
+    --success-foreground: 0 0% 0%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 0%;
+  }
+
+  :root { color-scheme: dark; }
+}
+
+@layer base {
+  * { @apply border-border; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    @apply antialiased;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    background-color: #0A0A0B;
+    color: white;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background-color: #C1FF2F;
+    color: black;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #0A0A0B; }
+  ::-webkit-scrollbar-thumb { background: #1E293B; border-radius: 10px; }
+  ::-webkit-scrollbar-thumb:hover { background: #C1FF2F; }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply tracking-tight;
+  }
+}
+
+@layer components {
+  /* Glass card — near invisible */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.02);
+  }
+
+  /* Grainy overlay */
+  .grain {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  }
+
+  /* Diagonal section */
+  .diagonal-section {
+    clip-path: polygon(0 0, 100% 5%, 100% 100%, 0 95%);
+  }
+
+  /* Acid green input focus */
+  .acid-input {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+  }
+  .acid-input:focus-within {
+    border-color: #C1FF2F;
+    background: rgba(193, 255, 47, 0.02);
+    box-shadow: 0 0 15px rgba(193, 255, 47, 0.1);
+  }
+
+  /* Acid green primary button */
+  .btn-acid {
+    background: #C1FF2F;
+    color: black;
+    font-weight: 800;
+    border-radius: 12px;
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .btn-acid:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(193, 255, 47, 0.25);
+  }
+
+  /* Magnetic border button */
+  .magnetic-btn {
+    position: relative;
+    background: black;
+    border-radius: 100px;
+    padding: 2px;
+    overflow: hidden;
+    display: inline-block;
+    transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .magnetic-btn::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: conic-gradient(transparent, #C1FF2F, transparent 30%);
+    animation: rotate-border 4s linear infinite;
+    z-index: 0;
+  }
+  .magnetic-btn:hover { transform: scale(1.02); }
+  .magnetic-btn-inner {
+    background: #0A0A0B;
+    border-radius: 98px;
+    padding: 1rem 2.5rem;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  @keyframes rotate-border {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  /* Float animation */
+  .float {
+    animation: floating 6s ease-in-out infinite;
+  }
+  @keyframes floating {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(1deg); }
+  }
+  .float-subtle {
+    animation: floating-subtle 4s ease-in-out infinite;
+  }
+  @keyframes floating-subtle {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .text-acid { color: #C1FF2F; }
+  .bg-obsidian { background-color: #0A0A0B; }
+  .border-glow { border-color: rgba(193, 255, 47, 0.2); }
+}
