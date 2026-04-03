@@ -14,16 +14,195 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      credentials: {
+        Row: {
+          ai_confidence_score: number | null
+          blockchain_hash: string | null
+          created_at: string
+          document_type: string
+          file_url: string | null
+          id: string
+          institution_id: string
+          issued_at: string | null
+          revoked_at: string | null
+          status: Database["public"]["Enums"]["credential_status"]
+          student_user_id: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          ai_confidence_score?: number | null
+          blockchain_hash?: string | null
+          created_at?: string
+          document_type?: string
+          file_url?: string | null
+          id?: string
+          institution_id: string
+          issued_at?: string | null
+          revoked_at?: string | null
+          status?: Database["public"]["Enums"]["credential_status"]
+          student_user_id: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          ai_confidence_score?: number | null
+          blockchain_hash?: string | null
+          created_at?: string
+          document_type?: string
+          file_url?: string | null
+          id?: string
+          institution_id?: string
+          issued_at?: string | null
+          revoked_at?: string | null
+          status?: Database["public"]["Enums"]["credential_status"]
+          student_user_id?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "credentials_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      institutions: {
+        Row: {
+          admin_user_id: string | null
+          code: string
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          status: Database["public"]["Enums"]["institution_status"]
+          updated_at: string
+        }
+        Insert: {
+          admin_user_id?: string | null
+          code: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          status?: Database["public"]["Enums"]["institution_status"]
+          updated_at?: string
+        }
+        Update: {
+          admin_user_id?: string | null
+          code?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          status?: Database["public"]["Enums"]["institution_status"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          full_name: string | null
+          id: string
+          role: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          role?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          role?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      verification_logs: {
+        Row: {
+          credential_id: string
+          id: string
+          method: string
+          result: string
+          verified_at: string
+          verifier_info: string | null
+        }
+        Insert: {
+          credential_id: string
+          id?: string
+          method?: string
+          result: string
+          verified_at?: string
+          verifier_info?: string | null
+        }
+        Update: {
+          credential_id?: string
+          id?: string
+          method?: string
+          result?: string
+          verified_at?: string
+          verifier_info?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "verification_logs_credential_id_fkey"
+            columns: ["credential_id"]
+            isOneToOne: false
+            referencedRelation: "credentials"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "moderator" | "user"
+      credential_status: "pending" | "active" | "revoked"
+      institution_status: "pending" | "approved" | "rejected"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +329,10 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "moderator", "user"],
+      credential_status: ["pending", "active", "revoked"],
+      institution_status: ["pending", "approved", "rejected"],
+    },
   },
 } as const
