@@ -1,0 +1,16 @@
+{
+  "rewrites": [
+    { "source": "/landing___value_prop.html", "destination": "/landing___value_prop.html" },
+    { "source": "/how_it_works.html", "destination": "/how_it_works.html" },
+    { "source": "/for_institutions.html", "destination": "/for_institutions.html" },
+    { "source": "/verify.html", "destination": "/verify.html" },
+    { "source": "/pricing.html", "destination": "/pricing.html" },
+    { "source": "/help.html", "destination": "/help.html" },
+    { "source": "/report_fraud.html", "destination": "/report_fraud.html" },
+    { "source": "/terms.html", "destination": "/terms.html" },
+    { "source": "/refund_policy.html", "destination": "/refund_policy.html" },
+    { "source": "/google_oauth_consent.html", "destination": "/google_oauth_consent.html" },
+    { "source": "/initial_sync_configuration.html", "destination": "/initial_sync_configuration.html" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}

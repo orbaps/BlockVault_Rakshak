@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BLOCKVAULT | For Institutions</title>
+    <!-- Font: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <style>
+        :root {
+            --acid-green: #C1FF2F;
+            --obsidian: #0A0A0B;
+            --slate-soft: #1E293B;
+            --glass-white: rgba(255, 255, 255, 0.03);
+            --border-glow: rgba(193, 255, 47, 0.2);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--obsidian);
+            color: white;
+            overflow-x: hidden;
+            selection-background-color: var(--acid-green);
+            selection-color: black;
+        }
+
+        .grain {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--obsidian); }
+        ::-webkit-scrollbar-thumb { background: var(--slate-soft); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--acid-green); }
+
+        .glass-card {
+            background: var(--glass-white);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.02);
+        }
+        
+        .glow-card {
+            background: rgba(193, 255, 47, 0.02);
+            border: 1px solid var(--border-glow);
+            box-shadow: 0 0 40px rgba(193, 255, 47, 0.05);
+        }
+
+        .text-reveal {
+            background: linear-gradient(to right, white 50%, rgba(255,255,255,0.1) 50%);
+            background-size: 200% 100%;
+            background-position: 100% 0;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: background-position 0.8s ease-out;
+        }
+        .text-reveal.visible { background-position: 0% 0; }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
+            opacity: 0.15;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <div class="grain"></div>
+    <div class="blob w-[500px] h-[500px] bg-[var(--acid-green)] top-[-10%] right-[-10%] mix-blend-screen"></div>
+    <div class="blob w-[600px] h-[600px] bg-emerald-600 top-[60%] left-[-20%] mix-blend-screen"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 p-6 flex justify-between items-center bg-gradient-to-b from-black/80 to-transparent backdrop-blur-sm">
+        <div class="flex items-center gap-2">
+            <div class="w-8 h-8 bg-[#C1FF2F] flex items-center justify-center rounded-sm">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+            </div>
+            <a href="landing___value_prop.html" class="font-black text-xl tracking-tighter uppercase cursor-pointer">BlockVault</a>
+        </div>
+        <div class="hidden md:flex gap-8 text-sm font-bold uppercase tracking-widest text-zinc-500">
+            <a href="how_it_works.html" class="hover:text-white transition-colors pb-1 border-b-2 border-transparent">How It Works</a>
+            <a href="for_institutions.html" class="text-white transition-colors border-b-2 border-[var(--acid-green)] pb-1">For Institutions</a>
+            <a href="verify.html" class="hover:text-white transition-colors pb-1 border-b-2 border-transparent">Verify</a>
+            <a href="pricing.html" class="hover:text-white transition-colors pb-1 border-b-2 border-transparent">Pricing</a>
+        </div>
+        <div class="flex items-center gap-3">
+            <button class="text-zinc-400 px-4 py-2 rounded-full font-bold text-sm hover:text-white transition-colors">Sign In</button>
+            <button class="bg-white text-black px-6 py-2 rounded-full font-bold text-sm hover:scale-105 transition-transform">Get Started</button>
+        </div>
+    </nav>
+
+    <main class="flex-grow pt-32 pb-20 px-6 max-w-6xl mx-auto space-y-32">
+        
+        <!-- Hero Section -->
+        <header class="text-center max-w-4xl mx-auto">
+            <span class="inline-block border border-[rgba(193,255,47,0.3)] text-[var(--acid-green)] px-4 py-1 rounded-full text-xs font-bold tracking-widest uppercase mb-6 bg-[rgba(193,255,47,0.05)]">
+                The Issuing Authority Hub
+            </span>
+            <h1 class="text-5xl md:text-7xl font-black leading-tight tracking-tighter mb-6 uppercase text-reveal visible">
+                Zero-Fraud <br><span class="text-[var(--acid-green)] italic">Credential Management.</span>
+            </h1>
+            <p class="text-xl text-zinc-400 leading-relaxed font-medium">
+                Eliminate the repetitive verification requests draining your administrative resources. Become a certified node on the BlockVault network and issue tamper-proof certificates instantly.
+            </p>
+            <div class="mt-10 flex justify-center gap-4">
+                <button class="bg-[var(--acid-green)] text-black px-8 py-3 rounded-full font-black uppercase tracking-widest hover:scale-105 transition-transform">Register Institution</button>
+                <button class="glass-card hover:bg-white/10 px-8 py-3 rounded-full font-bold uppercase tracking-widest transition-colors border border-zinc-700">View Demo</button>
+            </div>
+        </header>
+
+        <!-- Institutional Advantage -->
+        <section class="grid md:grid-cols-2 gap-8 items-center">
+            <div class="space-y-6 lg:pr-10">
+                <h2 class="text-4xl font-black uppercase tracking-tighter">The End of Manual Verification.</h2>
+                <p class="text-zinc-400 leading-relaxed">
+                    Institutions act as validators — you are the authoritative source for the credentials you issue. Every certificate uploaded is cryptographically signed by your institution and logged permanently.
+                </p>
+                <ul class="space-y-4">
+                    <li class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full bg-[var(--acid-green)] flex items-center justify-center text-black font-black">✓</div>
+                        <span class="font-bold">Zero administrative waste</span>
+                    </li>
+                    <li class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full bg-[var(--acid-green)] flex items-center justify-center text-black font-black">✓</div>
+                        <span class="font-bold">Immutable student histories via APAAR ids</span>
+                    </li>
+                    <li class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center text-red-500 font-black">✗</div>
+                        <span class="font-bold text-zinc-500 line-through">Responding to recruiter emails</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="glass-card glow-card rounded-[40px] p-10 text-center relative overflow-hidden">
+                <p class="text-[var(--acid-green)] text-xs font-bold tracking-widest uppercase mb-4">Proof of Authority</p>
+                <h3 class="text-2xl font-black mb-4">Only Accredited Actors</h3>
+                <p class="text-zinc-400 text-sm leading-relaxed relative z-10">
+                    A novel Hybrid Consensus mechanism dictates that <strong>only verified and AICTE-approved institutions</strong> can issue credentials. Unverified institutions cannot create or sign credentials, completely protecting the network from bad actors.
+                </p>
+                <svg class="absolute -bottom-10 -right-10 w-48 h-48 opacity-10 text-[var(--acid-green)]" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 6c1.4 0 2.8 1.4 2.8 2.8S13.4 12.6 12 12.6s-2.8-1.4-2.8-2.8S10.6 7 12 7zm0 10.5c-2.4 0-4.5-1.5-5.4-3.6 1.6-1.1 3.5-1.8 5.4-1.8s3.8.7 5.4 1.8c-.9 2.1-3 3.6-5.4 3.6z"/></svg>
+            </div>
+        </section>
+
+        <!-- The Workflow -->
+        <section>
+            <h2 class="text-3xl font-black uppercase mb-12 tracking-tighter text-center">Your Administrative Journey</h2>
+            <div class="grid md:grid-cols-5 gap-6">
+                <!-- Step 1 -->
+                <div class="glass-card rounded-2xl p-6 relative group hover:border-[var(--acid-green)] transition-all">
+                    <div class="text-4xl font-black text-zinc-800 mb-4 group-hover:text-[var(--acid-green)] transition-colors">01</div>
+                    <h3 class="font-bold mb-2 uppercase text-sm">Register</h3>
+                    <p class="text-xs text-zinc-400">Sign up on the SaaS portal providing AICTE/UGC accreditation details. Await Root Authority approval.</p>
+                </div>
+                <!-- Step 2 -->
+                <div class="glass-card rounded-2xl p-6 relative group hover:border-[var(--acid-green)] transition-all">
+                    <div class="text-4xl font-black text-zinc-800 mb-4 group-hover:text-[var(--acid-green)] transition-colors">02</div>
+                    <h3 class="font-bold mb-2 uppercase text-sm">Enroll</h3>
+                    <p class="text-xs text-zinc-400">Add enrolled students to the private workspace, generating their unique Digital Credential Passports.</p>
+                </div>
+                <!-- Step 3 -->
+                <div class="glass-card rounded-2xl p-6 relative group hover:border-[var(--acid-green)] transition-all">
+                    <div class="text-4xl font-black text-zinc-800 mb-4 group-hover:text-[var(--acid-green)] transition-colors">03</div>
+                    <h3 class="font-bold mb-2 uppercase text-sm">Upload</h3>
+                    <p class="text-xs text-zinc-400">Upload Marksheets, LORs, or NOCs. Our AI Layer auto-extracts metadata and flags timeline errors instantly.</p>
+                </div>
+                <!-- Step 4 -->
+                <div class="glass-card rounded-2xl p-6 relative group hover:border-white transition-all bg-[var(--acid-green)]/10">
+                    <div class="text-4xl font-black text-[var(--acid-green)] mb-4">04</div>
+                    <h3 class="font-bold mb-2 uppercase text-sm text-white">Hash & Block</h3>
+                    <p class="text-xs text-zinc-300">Document generates a rapid SHA-256 fingerprint, pushing permanently to the Hyperledger Fabric blockchain.</p>
+                </div>
+                <!-- Step 5 -->
+                <div class="glass-card rounded-2xl p-6 relative group hover:border-[var(--acid-green)] transition-all">
+                    <div class="text-4xl font-black text-zinc-800 mb-4 group-hover:text-[var(--acid-green)] transition-colors">05</div>
+                    <h3 class="font-bold mb-2 uppercase text-sm">Manage</h3>
+                    <p class="text-xs text-zinc-400">View all issues via the Explorer Dashboard. Retain the power to revoke fraudulent or erroneous credentials instantly.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="p-8 border-t border-zinc-900 bg-black mt-20">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="flex items-center gap-2">
+                <div class="w-6 h-6 bg-white flex items-center justify-center rounded-sm">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="4"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                </div>
+                <span class="font-black tracking-tighter uppercase">BlockVault © 2026</span>
+            </div>
+            <div class="flex flex-wrap justify-center gap-6 md:gap-8 text-[10px] sm:text-xs font-bold uppercase tracking-widest text-zinc-600">
+                <a href="help.html" class="hover:text-[var(--acid-green)] transition-colors mt-1">Help</a>
+                <a href="report_fraud.html" class="bg-red-500/10 text-red-400 px-3 py-1 rounded border border-red-500/20 hover:bg-red-500 hover:text-white transition-colors">Report Fraud</a>
+                <a href="terms.html" class="hover:text-[var(--acid-green)] transition-colors mt-1">Terms</a>
+                <a href="refund_policy.html" class="hover:text-[var(--acid-green)] transition-colors mt-1">Refund Policy</a>
+            </div>
+            <div class="text-[var(--acid-green)] font-mono text-xs animate-pulse">
+                LEDGER_ONLINE // CREDENTIALS_VERIFIED
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const observerOptions = { threshold: 0.1 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, observerOptions);
+        document.querySelectorAll('.text-reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
