@@ -145,7 +145,8 @@ BlockVault provides:
 - Perform deep validation  
 - Generate audit reports  
 
-![Uploading organisation.png…]()
+<img width="1024" height="1536" alt="organisation" src="https://github.com/user-attachments/assets/7b964249-4019-4f63-9c93-a806a887a4db" />
+
 
 ---
 
